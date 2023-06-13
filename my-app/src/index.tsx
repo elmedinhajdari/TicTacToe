@@ -1,15 +1,26 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import React from "react";
+import ReactDOM from "react-dom/client";
+import "./index.css";
+import App from "./App";
+import reportWebVitals from "./reportWebVitals";
+import { createBrowserHistory } from "history";
+import CustomRouter from "./CustomRouter";
+import "bootstrap/dist/css/bootstrap.min.css";
+import "bootstrap/dist/js/bootstrap.bundle.min";
+import 'swiper/css';
+import "swiper/css/pagination";
+import "swiper/css/navigation";
+import "./style/style.css";
 
+export let history = createBrowserHistory();
 const root = ReactDOM.createRoot(
-  document.getElementById('root') as HTMLElement
+  document.getElementById("root") as HTMLElement
 );
 root.render(
   <React.StrictMode>
-    <App />
+    <CustomRouter history={history}>
+      <App />
+    </CustomRouter>
   </React.StrictMode>
 );
 

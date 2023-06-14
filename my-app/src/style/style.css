@@ -75,6 +75,10 @@ body {
   font-size: 15px;
 }
 
+.navbarButtonToggle {
+  display: block;
+}
+
 .navdrop div {
   background-color: #0c1a29 !important;
 }

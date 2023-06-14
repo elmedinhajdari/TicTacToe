@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Container, Row, Col, Button, Modal } from "react-bootstrap";
+import { Container, Row, Col, Button, Modal, ButtonGroup } from "react-bootstrap";
 import * as PIXI from "pixi.js";
+import dingSound from "../sound/ding.mp3";
 
 const TyppingGame = () => {
   const [words, setWords] = useState<string[]>([]);
@@ -12,10 +13,9 @@ const TyppingGame = () => {
   const timerRef = useRef<NodeJS.Timeout | null>(null);
   const gameContainerRef = useRef<HTMLDivElement>(null);
   const appRef = useRef<PIXI.Application | null>(null);
+  const [gameReady, setGameReady] = useState(false);
+  const dingAudioRef = useRef<HTMLAudioElement | null>(null);
 
-
-
-  // https://api.dictionaryapi.dev/api/v2/entries/en/ + `{currentWordIndex}`
   useEffect(() => {
     const fetchWords = async () => {
       const response = await fetch(
@@ -34,44 +34,21 @@ const TyppingGame = () => {
     return () => {
       stopTimer();
     };
-  }, []);
+  }, [gameReady]);
 
   useEffect(() => {
     if (typedWord === words[currentWordIndex]) {
       setScore((prevScore) => prevScore + 1);
       setTypedWord("");
       setCurrentWordIndex((prevIndex) => prevIndex + 1);
+      if (dingAudioRef.current) {
+        dingAudioRef.current.play();
+      }
     }
   }, [typedWord, words, currentWordIndex]);
 
-  const startTimer = () => {
-    timerRef.current = setInterval(() => {
-      setTime((prevTime) => prevTime + 1);
-    }, 1000);
-
-    setTimeout(() => {
-      stopTimer();
-      setShowModal(true);
-    }, 61000);
-  };
-
-  const stopTimer = () => {
-    if (timerRef.current) {
-      clearInterval(timerRef.current);
-      timerRef.current = null;
-    }
-  };
-
-  const handleInputChange = (e: any) => {
-    setTypedWord(e.target.value);
-  };
-
-  const restartGame = () => {
-    window.location.reload();
-  };
-
   useEffect(() => {
-    if (gameContainerRef.current && !appRef.current) {
+    if (gameReady && gameContainerRef.current && !appRef.current) {
       // Set up Pixi.js stage and renderer
       const app = new PIXI.Application({ width: 800, height: 600 });
       appRef.current = app;
@@ -94,7 +71,45 @@ const TyppingGame = () => {
         appRef.current = null;
       }
     };
-  }, [currentWordIndex, words]);
+  }, [currentWordIndex, words, gameReady]);
+
+  useEffect(() => {
+    if (dingAudioRef.current) {
+      dingAudioRef.current.src = dingSound;
+    }
+  }, []);
+
+  const startTimer = () => {
+    if (gameReady) {
+      timerRef.current = setInterval(() => {
+        setTime((prevTime) => prevTime + 1);
+      }, 1000);
+
+      setTimeout(() => {
+        stopTimer();
+        setShowModal(true);
+      }, 61000);
+    }
+  };
+
+  const stopTimer = () => {
+    if (timerRef.current) {
+      clearInterval(timerRef.current);
+      timerRef.current = null;
+    }
+  };
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setTypedWord(e.target.value);
+  };
+
+  const startGame = () => {
+    setGameReady(true);
+  };
+
+  const restartGame = () => {
+    window.location.reload();
+  };
 
   return (
     <Container>
@@ -107,22 +122,32 @@ const TyppingGame = () => {
           <h5>Time: {time} seconds</h5>
         </Col>
       </Row>
-      <Row>
-        <Col>
-          <div ref={gameContainerRef} />
-        </Col>
+      <Row className="justify-content-center align-items-center">
+        {gameReady ? (
+          <>
+            <Col>
+              <div ref={gameContainerRef} />
+            </Col>
+            <Row className="mt-3">
+              <Col>
+                <input
+                  type="text"
+                  value={typedWord}
+                  onChange={handleInputChange}
+                  placeholder="Type the word here"
+                />
+              </Col>
+            </Row>
+          </>
+        ) : (
+          <ButtonGroup>
+            <Button variant="primary" onClick={startGame}>
+              Start
+            </Button>
+          </ButtonGroup>
+        )}
       </Row>
-      <Row className="mt-3">
-        <Col>
-          <input
-            type="text"
-            value={typedWord}
-            onChange={handleInputChange}
-            placeholder="Type the word here"
-          />
-        </Col>
-      </Row>
-
+      <audio ref={dingAudioRef} />
       <Modal
         className="text-center"
         show={showModal}

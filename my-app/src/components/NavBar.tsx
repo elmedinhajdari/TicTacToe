@@ -31,7 +31,7 @@ const NavBar = () => {
         <Container className="text-center">
           <Navbar.Brand as={Link} to={"/"} className="navTitle">
             <i className="fa-solid fa-x me-2"></i>
-            
+
             <i className="fa-solid fa-o ms-2"></i>
           </Navbar.Brand>
           <Navbar.Toggle aria-controls="responsive-navbar-nav navbarButtonToggle" />
@@ -41,13 +41,7 @@ const NavBar = () => {
                 Home
               </Nav.Link>
               <Nav.Link as={Link} to="typpinggame">
-                Auction
-              </Nav.Link>
-              <Nav.Link as={Link} to="posts">
-                Posts
-              </Nav.Link>
-              <Nav.Link as={Link} to="contact">
-                Contact
+                Typper
               </Nav.Link>
             </Nav>
           </Navbar.Collapse>

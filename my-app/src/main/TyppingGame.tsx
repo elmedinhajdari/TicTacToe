@@ -139,7 +139,7 @@ const TyppingGame = () => {
   };
 
   return (
-    <Container>
+    <Container className="mb-5">
       <Row className="mb-3">
         {gameReady && (
           <>

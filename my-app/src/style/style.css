@@ -162,9 +162,9 @@ body {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: calc(100% + 240px); /* Adjust width and left/top positions accordingly */
-  height: calc(100% + 240px); /* Adjust height and left/top positions accordingly */
-  border: 4px solid transparent; /* Change border width as needed */
+  width: calc(100% + 240px);
+  height: calc(100% + 240px);
+  border: 4px solid transparent; 
   animation: square-lines 2.5s linear infinite;
 }
 
@@ -185,3 +185,18 @@ body {
     border-color: #eed547;
   }
 }
+
+.fade {
+  opacity: 0;
+  transition: opacity 1s;
+}
+
+.fade.in {
+  opacity: 1;
+}
+
+.fade.out {
+  opacity: 0;
+}
+
+

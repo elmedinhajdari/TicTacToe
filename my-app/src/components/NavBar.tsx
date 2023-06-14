@@ -35,16 +35,6 @@ const NavBar = () => {
             <i className="fa-solid fa-o ms-2"></i>
           </Navbar.Brand>
           <Navbar.Toggle aria-controls="responsive-navbar-nav navbarButtonToggle" />
-          <Navbar.Collapse id="responsive-navbar-nav">
-            <Nav className="me-auto ms-auto navbarStyle">
-              <Nav.Link as={Link} to="/">
-                Home
-              </Nav.Link>
-              <Nav.Link as={Link} to="typpinggame">
-                Typper
-              </Nav.Link>
-            </Nav>
-          </Navbar.Collapse>
         </Container>
       </Navbar>
     </>

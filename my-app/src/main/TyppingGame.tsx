@@ -1,5 +1,12 @@
-import React, { useState, useEffect, useRef } from "react";
-import { Container, Row, Col, Button, Modal, ButtonGroup } from "react-bootstrap";
+import { useState, useEffect, useRef } from "react";
+import {
+  Container,
+  Row,
+  Col,
+  Button,
+  Modal,
+  ButtonGroup,
+} from "react-bootstrap";
 import * as PIXI from "pixi.js";
 import dingSound from "../sound/ding.mp3";
 
@@ -14,19 +21,21 @@ const TyppingGame = () => {
   const gameContainerRef = useRef<HTMLDivElement>(null);
   const appRef = useRef<PIXI.Application | null>(null);
   const [gameReady, setGameReady] = useState(false);
-  const dingAudioRef = useRef<HTMLAudioElement | null>(null);
+  const dingAudioRef = useRef<any>(null);
+  const [difficulty, setDifficulty] = useState("");
+  const [wordLength, setWordLength] = useState(0);
 
   useEffect(() => {
     const fetchWords = async () => {
       const response = await fetch(
-        "https://random-word-api.herokuapp.com/word?number=1000&length=15"
+        `https://random-word-api.herokuapp.com/word?number=1000&length=${wordLength}`
       );
       const data = await response.json();
       setWords(data);
     };
 
     fetchWords();
-  }, []);
+  }, [wordLength]);
 
   useEffect(() => {
     startTimer();
@@ -42,6 +51,7 @@ const TyppingGame = () => {
       setTypedWord("");
       setCurrentWordIndex((prevIndex) => prevIndex + 1);
       if (dingAudioRef.current) {
+        dingAudioRef.current.currentTime = 0;
         dingAudioRef.current.play();
       }
     }
@@ -49,15 +59,13 @@ const TyppingGame = () => {
 
   useEffect(() => {
     if (gameReady && gameContainerRef.current && !appRef.current) {
-      // Set up Pixi.js stage and renderer
       const app = new PIXI.Application({ width: 800, height: 600 });
       appRef.current = app;
       gameContainerRef.current.appendChild(app.view as any);
 
-      // Create a text element for displaying the current word
       const text = new PIXI.Text(words[currentWordIndex], {
         fontSize: 48,
-        fill: "green",
+        fill: "white",
       });
       text.anchor.set(0.5);
       text.x = app.screen.width / 2;
@@ -88,7 +96,7 @@ const TyppingGame = () => {
       setTimeout(() => {
         stopTimer();
         setShowModal(true);
-      }, 61000);
+      }, 60500);
     }
   };
 
@@ -99,28 +107,53 @@ const TyppingGame = () => {
     }
   };
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleInputChange = (e: any) => {
     setTypedWord(e.target.value);
-  };
-
-  const startGame = () => {
-    setGameReady(true);
   };
 
   const restartGame = () => {
     window.location.reload();
   };
 
+  const returnHome = () => {
+    window.location.href = "/";
+  };
+
+  const handleStartGame = () => {
+    setScore(0);
+    setTime(0);
+    setCurrentWordIndex(0);
+    setShowModal(false);
+    setGameReady(true);
+  };
+
+  const handleDifficultyChange = (value: any) => {
+    setDifficulty(value);
+    if (value === "Easy") {
+      setWordLength(5);
+    } else if (value === "Medium") {
+      setWordLength(10);
+    } else if (value === "Hard") {
+      setWordLength(15);
+    }
+  };
+
   return (
     <Container>
-      <h1 className="mt-4 mb-3">Typing Game</h1>
       <Row className="mb-3">
-        <Col>
-          <h5>Score: {score}</h5>
-        </Col>
-        <Col>
-          <h5>Time: {time} seconds</h5>
-        </Col>
+        {gameReady && (
+          <>
+            <Col className="col-sm-5">
+              <h5>Score: {score}</h5>
+            </Col>
+            <Col className="col-sm-4">
+              <h5>Time: {time}s / 60s</h5>
+            </Col>
+            <Col className="col-sm-4">
+              <h5>Difficulty: {difficulty}</h5>
+            </Col>
+          </>
+        )}
       </Row>
       <Row className="justify-content-center align-items-center">
         {gameReady ? (
@@ -140,16 +173,46 @@ const TyppingGame = () => {
             </Row>
           </>
         ) : (
-          <ButtonGroup>
-            <Button variant="primary" onClick={startGame}>
-              Start
-            </Button>
-          </ButtonGroup>
+          <div className="typing-animation square-animation">
+            {!gameReady && <h1 className="typing-animation2">Typing Game</h1>}
+            <h5>Select Difficulty: {wordLength} words</h5>
+            <ButtonGroup className="gap-3">
+              <Button
+                variant={difficulty === "Easy" ? "success" : "outline-success"}
+                onClick={() => handleDifficultyChange("Easy")}
+              >
+                Easy
+              </Button>
+              <Button
+                variant={
+                  difficulty === "Medium" ? "warning" : "outline-warning"
+                }
+                onClick={() => handleDifficultyChange("Medium")}
+              >
+                Medium
+              </Button>
+              <Button
+                variant={difficulty === "Hard" ? "danger" : "outline-danger"}
+                onClick={() => handleDifficultyChange("Hard")}
+              >
+                Hard
+              </Button>
+              <Button
+                className="ms-1"
+                variant="success"
+                onClick={handleStartGame}
+                disabled={!difficulty}
+              >
+                Start Game
+              </Button>
+            </ButtonGroup>
+          </div>
         )}
       </Row>
+
       <audio ref={dingAudioRef} />
       <Modal
-        className="text-center"
+        className="text-center cl"
         show={showModal}
         onHide={restartGame}
         centered
@@ -161,11 +224,11 @@ const TyppingGame = () => {
           <p>Your final score: {score}</p>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="primary" onClick={restartGame}>
-            Restart
+          <Button onClick={returnHome} variant="primary">
+            Return Home
           </Button>
           <Button variant="primary" onClick={restartGame}>
-            Return Home
+            Restart
           </Button>
         </Modal.Footer>
       </Modal>

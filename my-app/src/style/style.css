@@ -1,36 +1,35 @@
-*{
-    padding: 0;
-    margin: 0;
+* {
+  padding: 0;
+  margin: 0;
 }
 
 body {
-    background-color: #050e18 !important;
-    color: #e8e6e3 !important;
-  }
-  
-  .app {
-    height: 100%;
-    display: flex;
-    position: relative;
-  }
-  
+  background-color: #050e18 !important;
+  color: #e8e6e3 !important;
+}
 
-  body {
-    margin: 0;
-    padding: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-  }
-  
-  #root {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-  
-  /*  NAVBAR  */
+.app {
+  height: 100%;
+  display: flex;
+  position: relative;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+#root {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/*  NAVBAR  */
 
 .navTitle {
   color: #f72e38 !important;
@@ -100,4 +99,89 @@ body {
 
 .transparentNavbar {
   background: transparent !important;
+}
+
+.cl {
+  color: #0c1a29 !important;
+}
+
+@keyframes typing {
+  0% {
+    opacity: 0;
+    transform: translateX(-10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.typing-animation {
+  animation: typing 1s ease-in-out forwards;
+}
+
+.typing-animation2 {
+  overflow: hidden; /* Hide overflowing characters */
+  white-space: nowrap; /* Prevent line breaks */
+  animation: typing2 2s steps(50);
+}
+
+@keyframes typing2 {
+  from {
+    width: 0;
+  }
+  to {
+    width: 100%;
+  }
+}
+
+@keyframes blink {
+  0% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+.typing-animation2::after {
+  content: ".";
+  animation: blink 1s infinite;
+}
+
+.square-animation {
+  position: relative;
+}
+
+.square-animation::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: calc(100% + 240px); /* Adjust width and left/top positions accordingly */
+  height: calc(100% + 240px); /* Adjust height and left/top positions accordingly */
+  border: 4px solid transparent; /* Change border width as needed */
+  animation: square-lines 2.5s linear infinite;
+}
+
+@keyframes square-lines {
+  0% {
+    border-color: #09e46b;
+  }
+  25% {
+    border-color: #eed547;
+  }
+  50% {
+    border-color: #da2121;
+  }
+  75% {
+    border-color: #09e46b;
+  }
+  100% {
+    border-color: #eed547;
+  }
 }

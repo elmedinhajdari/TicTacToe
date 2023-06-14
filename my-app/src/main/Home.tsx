@@ -19,26 +19,26 @@ const Home = () => {
           hello: false,
           and: true
         }));
-      }, 2000),
+      }, 2500),
       setTimeout(() => {
         setVisible((prevState) => ({
           ...prevState,
           and: false,
           welcome: true
         }));
-      }, 4000),
+      }, 4500),
       setTimeout(() => {
         setVisible((prevState) => ({
           ...prevState,
           welcome: false,
         }));
-      }, 6000),
+      }, 6500),
       setTimeout(() => {
         setVisible((prevState) => ({
           ...prevState,
           typpingGame: true,
         }));
-      }, 7000)
+      }, 6800)
     ];
 
     return () => timeouts.forEach((timeout) => clearTimeout(timeout));
@@ -47,9 +47,9 @@ const Home = () => {
   return (
     <Container>
       <div>
-        <h1 className={`fade ${visible.hello ? "in" : "out"}`}>Hello</h1>
-        <h1 className={`fade ${visible.and ? "in" : "out"}`}>And</h1>
-        <h1 className={`fade ${visible.welcome ? "in" : "out"}`}>Welcome</h1>
+        <h1 className={`fade ${visible.hello ? "in" : "out"}`}>{visible.hello && "Hello"}</h1>
+        <h1 className={`fade ${visible.and ? "in" : "out"}`}>{visible.and && "And"}</h1>
+        <h1 className={`fade ${visible.welcome ? "in" : "out"}`}>{visible.welcome && "Welcome"}</h1>
         {visible.typpingGame && <TyppingGame />}
       </div>
     </Container>

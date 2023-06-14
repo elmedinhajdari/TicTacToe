@@ -30,3 +30,70 @@ body {
     align-items: center;
   }
   
+  /*  NAVBAR  */
+
+.navTitle {
+  color: #f72e38 !important;
+  font-weight: 600;
+  align-self: center;
+  cursor: pointer;
+}
+
+.footer-navTitle {
+  color: #f72e38 !important;
+  font-weight: 600;
+  align-self: center;
+  cursor: pointer;
+}
+
+.btnColor {
+  background-color: #f72e38 !important;
+  font-weight: 600;
+  align-self: center;
+}
+
+.navbar {
+  background-color: #0c1a29;
+}
+
+.navbarStyle a {
+  font-size: 16px;
+  text-transform: uppercase;
+  font-weight: 600;
+  font-family: Roboto, sans-serif;
+  color: #cdbcb6;
+  transition: 0.3s ease-in-out;
+  margin-right: 25px;
+}
+.navbarStyle a:hover {
+  color: #f72e38 !important;
+  transition: 0.5s ease-in-out;
+}
+
+.categoryFont div a {
+  text-transform: none;
+  font-size: 15px;
+}
+
+.navdrop div {
+  background-color: #0c1a29 !important;
+}
+
+.navdrop div a {
+  color: #e8e6e3;
+  font-family: "Roboto Mono", monospace;
+  border-bottom: dashed 1px rgb(67, 111, 153);
+  line-height: 40px;
+}
+
+.removeDash {
+  border-bottom: none !important;
+}
+
+.navdrop div hr {
+  color: white;
+}
+
+.transparentNavbar {
+  background: transparent !important;
+}

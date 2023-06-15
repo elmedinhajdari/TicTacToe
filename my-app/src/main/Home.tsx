@@ -49,7 +49,7 @@ const Home = () => {
       <div>
         <h1 className={`fade ${visible.hello ? "in" : "out"}`}>{visible.hello && "Hello"}</h1>
         <h1 className={`fade ${visible.and ? "in" : "out"}`}>{visible.and && "And"}</h1>
-        <h1 className={`fade ${visible.welcome ? "in" : "out"}`}>{visible.welcome && "Welcome"}</h1>
+        <h1 className={`fade ${visible.welcome ? "in" : "out"}`}>{visible.welcome && "Welcome :)"}</h1>
         {visible.typpingGame && <TyppingGame />}
       </div>
     </Container>
